@@ -7,6 +7,9 @@
 #include <sys/ioctl.h>
 
 #define CTRL_KEY(k) ((k) & 0x1f)
+#define BLUE \033[34m
+#define END   \033[39m
+
 
 typedef struct  s_config {
   int screen_rows;
@@ -24,9 +27,11 @@ void  init_editor(void);
 
 // *** read_key.c ***
 void  editor_process(void);
+char  editor_read_key();
 
 // *** output.c ***
 void  clear_screen(void);
 
 // *** utils.c ***
 int get_window_size(int *rows, int *cols);
+int get_cursor_position(void);

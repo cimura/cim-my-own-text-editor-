@@ -1,6 +1,6 @@
 #include "kilo.h"
 
-static char  editor_read_key()
+char  editor_read_key()
 {
   ssize_t nread;
   char  c;
