@@ -2,6 +2,9 @@
 
 void  init_editor(void)
 {
+  g_E.cx = 0;
+  g_E.cy = 0;
+  
   if (get_window_size(&g_E.screen_rows, &g_E.screen_cols) == -1)
     error_exit("get_window_size");
 }

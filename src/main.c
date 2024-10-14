@@ -3,7 +3,6 @@
 int	main(void) {
   enable_raw_mode();
   init_editor();
-
   while (1)
   {
     clear_screen();
