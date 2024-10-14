@@ -8,15 +8,14 @@ void  editor_move_cursor(int key)
        g_E.cx--;
       break;
     case ARROW_RIGHT:
-      if (g_E.cx != g_E.screen_cols - 1)
-        g_E.cx++;
+      g_E.cx++;
       break;
     case ARROW_UP:
       if (g_E.cy != 0)
         g_E.cy--;
       break;
     case ARROW_DOWN:
-      if (g_E.cy != g_E.screen_rows - 1)
+      if (g_E.cy < g_E.num_rows)
         g_E.cy++;
       break;
   }

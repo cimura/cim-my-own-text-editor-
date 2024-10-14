@@ -4,6 +4,10 @@ void  init_editor(void)
 {
   g_E.cx = 0;
   g_E.cy = 0;
+  g_E.row_off = 0;
+  g_E.col_off = 0;
+  g_E.num_rows = 0;
+  g_E.row = NULL;
   
   if (get_window_size(&g_E.screen_rows, &g_E.screen_cols) == -1)
     error_exit("get_window_size");

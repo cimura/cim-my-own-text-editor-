@@ -6,10 +6,15 @@
 #include <termios.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include <sys/types.h>
 
 #define CTRL_KEY(k) ((k) & 0x1f)
 #define ABUF_INIT {NULL, 0}
 #define MY_VIM_VERSION "0.0.1"
+
+#define _DEFAULT_SOURCE
+#define _BSD_SOURCE
+#define _GNU_SOURCE
 
 #define BLUE \033[34m
 #define END   \033[39m
@@ -26,11 +31,21 @@ enum  editor_key {
   PAGE_DOWN
 };
 
+typedef struct  e_row
+{
+  int size;
+  char  *chars;
+} t_row;
+
 typedef struct  s_config {
   int cx;
   int cy;
+  int row_off;
+  int col_off;
   int screen_rows;
   int screen_cols;
+  int num_rows;
+  t_row *row;
   struct	termios orig_termios;
 } t_config;
 
@@ -60,3 +75,9 @@ int get_window_size(int *rows, int *cols);
 int get_cursor_position(int *rows, int *cols);
 void  buf_append(t_buf *buf, const char *data, int len);
 void  buf_free(t_buf *buf);
+
+// *** file_io.c ***
+void  editor_open(char *file_name);
+
+// *** row_operations.c ***
+void  append_row(char *s, size_t len);
