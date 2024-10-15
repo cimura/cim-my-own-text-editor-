@@ -1,9 +1,11 @@
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 #include <termios.h>
+#include <time.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <sys/types.h>
@@ -51,6 +53,9 @@ typedef struct  s_config {
   int screen_cols;
   int num_rows;
   t_row *row;
+  char  *file_name;
+  char  status_msg[80];
+  time_t  status_msg_time;
   struct	termios orig_termios;
 } t_config;
 
@@ -74,6 +79,7 @@ void  editor_move_cursor(int key);
 
 // *** output.c ***
 void  clear_screen(void);
+void  set_status_message(const char *fmt, ...);
 
 // *** utils.c ***
 int get_window_size(int *rows, int *cols);

@@ -117,12 +117,21 @@ void  editor_process(void)
       break;
     
     case  END_KEY:
-      g_E.cx = g_E.screen_cols - 1;
+      if (g_E.cy < g_E.num_rows)
+        g_E.cx = g_E.row[g_E.cy].size;
       break;
     
     case  PAGE_UP:
     case  PAGE_DOWN:
     {
+      if (c == PAGE_UP)
+        g_E.cy = g_E.row_off;
+      else if (c == PAGE_DOWN)
+      {
+        g_E.cy = g_E.row_off + g_E.screen_rows - 1;
+        if (g_E.cy > g_E.num_rows)
+          g_E.cy = g_E.num_rows;
+      }
       int times = g_E.screen_rows;
       while (times--)
         editor_move_cursor(c == PAGE_UP ? ARROW_UP : ARROW_DOWN);

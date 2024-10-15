@@ -9,9 +9,13 @@ void  init_editor(void)
   g_E.col_off = 0;
   g_E.num_rows = 0;
   g_E.row = NULL;
+  g_E.file_name = NULL;
+  g_E.status_msg[0] = '\0';
+  g_E.status_msg_time = 0;
   
   if (get_window_size(&g_E.screen_rows, &g_E.screen_cols) == -1)
     error_exit("get_window_size");
+  g_E.screen_rows -= 2;
 }
 void	disable_raw_mode(void)
 {

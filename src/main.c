@@ -5,6 +5,8 @@ int	main(int argc, char *argv[]) {
   init_editor();
   if (argc >= 2)
     editor_open(argv[1]);
+  
+  set_status_message("ctrl+q: quit");
 
   while (1)
   {
