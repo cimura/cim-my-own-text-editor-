@@ -10,7 +10,8 @@
 
 #define CTRL_KEY(k) ((k) & 0x1f)
 #define ABUF_INIT {NULL, 0}
-#define MY_VIM_VERSION "0.0.1"
+#define CIM_VERSION "0.0.1"
+#define CIM_TAB_STOP 8
 
 #define _DEFAULT_SOURCE
 #define _BSD_SOURCE
@@ -31,15 +32,19 @@ enum  editor_key {
   PAGE_DOWN
 };
 
+// tabにはアドホックに対応する
 typedef struct  e_row
 {
   int size;
+  int rsize;
   char  *chars;
+  char  *render;
 } t_row;
 
 typedef struct  s_config {
   int cx;
   int cy;
+  int rx;
   int row_off;
   int col_off;
   int screen_rows;
@@ -81,3 +86,4 @@ void  editor_open(char *file_name);
 
 // *** row_operations.c ***
 void  append_row(char *s, size_t len);
+int   row_cx_to_rx(t_row *row, int cx);

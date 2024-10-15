@@ -2,13 +2,27 @@
 
 void  editor_move_cursor(int key)
 {
+  t_row *row = (g_E.cy >= g_E.num_rows) ? NULL : &g_E.row[g_E.cy];
   switch (key) {
     case ARROW_LEFT:
       if (g_E.cx != 0)
        g_E.cx--;
+      // 行頭から一つ戻って前の行の行末に移動
+      else if (g_E.cy > 0)
+      {
+        g_E.cy--;
+        g_E.cx = g_E.row[g_E.cy].size;
+      }
       break;
     case ARROW_RIGHT:
-      g_E.cx++;
+      if (row && g_E.cx < row->size)
+        g_E.cx++;
+      // 行末に到達した際に次の行頭に移動する
+      else if(row && g_E.cx == row->size)
+      {
+        g_E.cy++;
+        g_E.cx = 0;
+      }
       break;
     case ARROW_UP:
       if (g_E.cy != 0)
@@ -19,6 +33,10 @@ void  editor_move_cursor(int key)
         g_E.cy++;
       break;
   }
+  row = (g_E.cy >= g_E.num_rows) ? NULL : &g_E.row[g_E.cy];
+  int row_len = row ? row->size : 0;
+  if (g_E.cx > row_len)
+    g_E.cx = row_len;
 }
 
 int  editor_read_key()

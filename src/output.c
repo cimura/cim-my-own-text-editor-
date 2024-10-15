@@ -14,14 +14,18 @@ static void padding(t_buf *buf, int welcome_len)
 
 static void scroll()
 {
+  g_E.rx = 0;
+  if (g_E.cy < g_E.num_rows)
+    g_E.rx = row_cx_to_rx(&g_E.row[g_E.cy], g_E.cx);
+
   if (g_E.cy < g_E.row_off)
     g_E.row_off = g_E.cy;
   if (g_E.cy >= g_E.row_off + g_E.screen_rows)
     g_E.row_off = g_E.cy - g_E.screen_rows + 1;
   if (g_E.cx < g_E.col_off)
-    g_E.col_off = g_E.cx;
+    g_E.col_off = g_E.rx;
   if (g_E.cx >= g_E.col_off + g_E.screen_cols)
-    g_E.col_off = g_E.cx - g_E.screen_cols + 1;
+    g_E.col_off = g_E.rx - g_E.screen_cols + 1;
 }
 
 static void  draw_rows(t_buf *buf)
@@ -36,7 +40,7 @@ static void  draw_rows(t_buf *buf)
       {
         char welcome[80];
         int welcome_len = snprintf(welcome, sizeof(welcome), 
-                                  "my_vim editor -- version %s", MY_VIM_VERSION);
+                                  "my_vim editor -- version %s", CIM_VERSION);
         if (welcome_len > g_E.screen_cols)
           welcome_len = g_E.screen_cols;
         
@@ -48,12 +52,12 @@ static void  draw_rows(t_buf *buf)
     }
     else
     {
-      int len = g_E.row[file_row].size - g_E.col_off;
+      int len = g_E.row[file_row].rsize - g_E.col_off;
       if (len < 0)
         len = 0;
       if (len > g_E.screen_cols)
         len = g_E.screen_cols;
-      buf_append(buf, &g_E.row[file_row].chars[g_E.col_off], len);
+      buf_append(buf, &g_E.row[file_row].render[g_E.col_off], len);
     }
     
     buf_append(buf, "\x1b[K", 3);
@@ -75,7 +79,7 @@ void  clear_screen(void)
 
   char b[32];
   snprintf(b, sizeof(b), "\x1b[%d;%dH",
-          (g_E.cy - g_E.row_off) + 1, (g_E.cx - g_E.col_off) + 1);
+          (g_E.cy - g_E.row_off) + 1, (g_E.rx - g_E.col_off) + 1);
   buf_append(&buf, b, strlen(b));
 
   // buf_append(&buf, "\x1b[H", 3);

@@ -4,6 +4,7 @@ void  init_editor(void)
 {
   g_E.cx = 0;
   g_E.cy = 0;
+  g_E.rx = 0;
   g_E.row_off = 0;
   g_E.col_off = 0;
   g_E.num_rows = 0;
