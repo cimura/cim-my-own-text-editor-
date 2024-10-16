@@ -1,9 +1,9 @@
-#include "kilo.h"
+#include "cim.h"
 
-int row_cx_to_rx(t_row *row, int cx)
+int row_cx_to_rx(t_row* row, int cx)
 {
   int rx = 0;
-  
+
   for (int j = 0; j < cx; ++j)
   {
     if (row->chars[j] == '\t')
@@ -13,7 +13,7 @@ int row_cx_to_rx(t_row *row, int cx)
   return (rx);
 }
 
-static void  update_row(t_row *row)
+static void  update_row(t_row* row)
 {
   int tabs = 0;
   int j;
@@ -22,8 +22,8 @@ static void  update_row(t_row *row)
     if (row->chars[j] == '\t')
       tabs++;
   free(row->render);
-  row->render = malloc(row->size + tabs*(CIM_TAB_STOP - 1) + 1);
-  
+  row->render = malloc(row->size + tabs * (CIM_TAB_STOP - 1) + 1);
+
   int idx = 0;
   for (j = 0; j < row->size; ++j)
   {
@@ -40,7 +40,7 @@ static void  update_row(t_row *row)
   row->rsize = idx;
 }
 
-void  append_row(char *s, size_t len)
+void  append_row(char* s, size_t len)
 {
   g_E.row = realloc(g_E.row, sizeof(t_row) * (g_E.num_rows + 1));
 
@@ -55,4 +55,18 @@ void  append_row(char *s, size_t len)
   update_row(&g_E.row[at]);
 
   g_E.num_rows++;
+}
+
+// ユーザーのinputに対応
+void  row_insert_char(t_row* row, int at, int c)
+{
+  if (at < 0 || at > row->size)
+    at = row->size;
+
+  // c(input), `\0' => +2
+  row->chars = realloc(row->chars, row->size + 2);
+  memmove(&row->chars[at + 1], &row->chars[at], row->size - at + 1);
+  row->size++;
+  row->chars[at] = c;
+  update_row(row);
 }

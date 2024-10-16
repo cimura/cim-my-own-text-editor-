@@ -93,3 +93,7 @@ void  editor_open(char *file_name);
 // *** row_operations.c ***
 void  append_row(char *s, size_t len);
 int   row_cx_to_rx(t_row *row, int cx);
+void  row_insert_char(t_row* row, int at, int c);
+
+// *** editor_operations.c ***
+void  editor_insert_char(int c);

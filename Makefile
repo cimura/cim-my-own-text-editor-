@@ -1,6 +1,7 @@
 NAME		:=	my_vim
 LIST_SRCS	:=	main.c setup.c read_key.c output.c \
-				utils.c file_io.c row_operations.c
+				utils.c file_io.c row_operations.c \
+				editor_operations.c
 
 DIR_SRCS	:=	src
 DIR_OBJS	:=	objs
