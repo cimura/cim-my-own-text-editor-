@@ -105,48 +105,64 @@ int  editor_read_key()
 void  editor_process(void)
 {
 	int  c = editor_read_key();
-	switch (c) {
-	case CTRL_KEY('q'):
-		write(STDOUT_FILENO, "\x1b[2J", 4);
-		write(STDOUT_FILENO, "\x1b[H", 3);
-		exit(EXIT_SUCCESS);
-		break;
+    switch (c) {
+    case '\r':
+      // TODO
+      break ;
+    case CTRL_KEY('q'):
+      write(STDOUT_FILENO, "\x1b[2J", 4);
+      write(STDOUT_FILENO, "\x1b[H", 3);
+      exit(EXIT_SUCCESS);
+      break;
+    
+    case CTRL_KEY('s'):
+      editor_save();
+      break;
 
-	case  HOME_KEY:
-		g_E.cx = 0;
-		break;
+    case  HOME_KEY:
+      g_E.cx = 0;
+      break;
 
-	case  END_KEY:
-		if (g_E.cy < g_E.num_rows)
-			g_E.cx = g_E.row[g_E.cy].size;
-		break;
+    case  END_KEY:
+      if (g_E.cy < g_E.num_rows)
+        g_E.cx = g_E.row[g_E.cy].size;
+      break;
+    case BACKSPACE:
+    case CTRL_KEY('h'):
+    case DEL_KEY:
+      // TODO
+      break;
 
-	case  PAGE_UP:
-	case  PAGE_DOWN:
-	{
-		if (c == PAGE_UP)
-			g_E.cy = g_E.row_off;
-		else if (c == PAGE_DOWN)
-		{
-			g_E.cy = g_E.row_off + g_E.screen_rows - 1;
-			if (g_E.cy > g_E.num_rows)
-				g_E.cy = g_E.num_rows;
-		}
-		int times = g_E.screen_rows;
-		while (times--)
-			editor_move_cursor(c == PAGE_UP ? ARROW_UP : ARROW_DOWN);
-	}
-	break;
+    case  PAGE_UP:
+    case  PAGE_DOWN:
+    {
+      if (c == PAGE_UP)
+        g_E.cy = g_E.row_off;
+      else if (c == PAGE_DOWN)
+      {
+        g_E.cy = g_E.row_off + g_E.screen_rows - 1;
+        if (g_E.cy > g_E.num_rows)
+          g_E.cy = g_E.num_rows;
+      }
+      int times = g_E.screen_rows;
+      while (times--)
+        editor_move_cursor(c == PAGE_UP ? ARROW_UP : ARROW_DOWN);
+    }
+    break;
 
-	case ARROW_UP:
-	case ARROW_DOWN:
-	case ARROW_LEFT:
-	case ARROW_RIGHT:
-		editor_move_cursor(c);
-		break;
+    case ARROW_UP:
+    case ARROW_DOWN:
+    case ARROW_LEFT:
+    case ARROW_RIGHT:
+      editor_move_cursor(c);
+      break;
+    
+    case CTRL_KEY('l'):
+    case '\x1b':
+      break;
 
-  default:
-    editor_insert_char(c);
-    break ;
+    default:
+      editor_insert_char(c);
+      break;
   }
 }

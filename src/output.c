@@ -70,8 +70,9 @@ static void  draw_status_bar(t_buf* buf)
 	buf_append(buf, "\x1b[7m", 4);
 
 	char  status[80], rstatus[80];
-	int len = snprintf(status, sizeof(status), "%.20s - %d lines",
-		g_E.file_name ? g_E.file_name : "[No Name]", g_E.num_rows);
+	int len = snprintf(status, sizeof(status), "%.20s - %d lines %s",
+		      g_E.file_name ? g_E.file_name : "[No Name]", g_E.num_rows,
+          g_E.dirty ? "(modified)" : "");
 	int rlen = snprintf(rstatus, sizeof(rstatus), "%d/%d",
 		g_E.cy + 1, g_E.num_rows);
 	if (len > g_E.screen_cols)

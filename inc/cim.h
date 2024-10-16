@@ -1,5 +1,6 @@
 #include <ctype.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -23,6 +24,7 @@
 #define END   \033[39m
 
 enum  editor_key {
+  BACKSPACE = 127,
   ARROW_LEFT = 1000,
   ARROW_RIGHT,
   ARROW_UP,
@@ -52,6 +54,7 @@ typedef struct  s_config {
   int screen_rows;
   int screen_cols;
   int num_rows;
+  int dirty;
   t_row *row;
   char  *file_name;
   char  status_msg[80];
@@ -89,6 +92,7 @@ void  buf_free(t_buf *buf);
 
 // *** file_io.c ***
 void  editor_open(char *file_name);
+void  editor_save();
 
 // *** row_operations.c ***
 void  append_row(char *s, size_t len);

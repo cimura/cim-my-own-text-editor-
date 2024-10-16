@@ -55,6 +55,7 @@ void  append_row(char* s, size_t len)
   update_row(&g_E.row[at]);
 
   g_E.num_rows++;
+  g_E.dirty++;
 }
 
 // ユーザーのinputに対応
@@ -69,4 +70,7 @@ void  row_insert_char(t_row* row, int at, int c)
   row->size++;
   row->chars[at] = c;
   update_row(row);
+
+  // どれだけソースに変更を加えたかを表示できる（＋α）
+  g_E.dirty++;
 }

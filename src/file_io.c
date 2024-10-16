@@ -1,5 +1,51 @@
 #include "cim.h"
 
+char  *rows_to_string(int *buflen)
+{
+  int ful_len = 0;
+  int j;
+  for (j = 0; j < g_E.num_rows; ++j)
+    ful_len += g_E.row[j].size + 1;
+  *buflen = ful_len;
+
+  char  *buf = malloc(ful_len);
+  char  *p = buf;
+  for (j = 0; j < g_E.num_rows; ++j)
+  {
+    memcpy(p, g_E.row[j].chars, g_E.row[j].size);
+    p += g_E.row[j].size;
+    *p = '\n';
+    p++;
+  }
+  return (buf);
+}
+
+void  editor_save()
+{
+  if (!g_E.file_name)
+    return ;
+  
+  int len;
+  char  *buf = rows_to_string(&len);
+
+  // openのオプションでもできるが，truncしてwriteが失敗すると
+  // データが消滅してしまう
+  int fd = open(g_E.file_name, O_RDWR | O_CREAT, 0644);
+  if (fd != -1 && ftruncate(fd, len) != -1)
+  {
+    if (write(fd, buf, len) == len)
+    {
+      close(fd);
+      free(buf);
+      g_E.dirty = 0;
+      set_status_message("%d bytes written to disk", len);
+      return;
+    }
+    close(fd);
+  }
+  free(buf);
+  set_status_message("Can't save! I/O error: %s", strerror(errno));
+}
 void  editor_open(char* file_name)
 {
 	free(g_E.file_name);
@@ -20,4 +66,5 @@ void  editor_open(char* file_name)
 	}
 	free(line);
 	fclose(fp);
+  g_E.dirty = 0;
 }
