@@ -15,6 +15,7 @@
 #define ABUF_INIT {NULL, 0}
 #define CIM_VERSION "0.0.1"
 #define CIM_TAB_STOP 8
+#define CIM_QUIT_TIMES 1
 
 #define _DEFAULT_SOURCE
 #define _BSD_SOURCE
@@ -98,6 +99,10 @@ void  editor_save();
 void  append_row(char *s, size_t len);
 int   row_cx_to_rx(t_row *row, int cx);
 void  row_insert_char(t_row* row, int at, int c);
+void  row_del_char(t_row *row, int at);
+void  row_append_string(t_row *row, char *s, size_t len);
+void  del_row(int at);
 
 // *** editor_operations.c ***
 void  editor_insert_char(int c);
+void  editor_del_char();

@@ -104,12 +104,20 @@ int  editor_read_key()
 
 void  editor_process(void)
 {
+  static int  quit_times = CIM_QUIT_TIMES;
 	int  c = editor_read_key();
     switch (c) {
     case '\r':
       // TODO
       break ;
     case CTRL_KEY('q'):
+      if (g_E.dirty && quit_times > 0)
+      {
+        set_status_message("Warning!!! File has unsaved changes."
+          "Press Ctrl-Q %d more times to quit.", quit_times);
+        quit_times--;
+        return;
+      }
       write(STDOUT_FILENO, "\x1b[2J", 4);
       write(STDOUT_FILENO, "\x1b[H", 3);
       exit(EXIT_SUCCESS);
@@ -130,7 +138,9 @@ void  editor_process(void)
     case BACKSPACE:
     case CTRL_KEY('h'):
     case DEL_KEY:
-      // TODO
+      if (c == DEL_KEY)
+        editor_move_cursor(ARROW_RIGHT);
+      editor_del_char();
       break;
 
     case  PAGE_UP:
@@ -165,4 +175,5 @@ void  editor_process(void)
       editor_insert_char(c);
       break;
   }
+  quit_times = CIM_QUIT_TIMES;
 }

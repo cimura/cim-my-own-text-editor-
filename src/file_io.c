@@ -28,8 +28,8 @@ void  editor_save()
   int len;
   char  *buf = rows_to_string(&len);
 
-  // openのオプションでもできるが，truncしてwriteが失敗すると
-  // データが消滅してしまう
+  // ftuncateではなくopenのオプションでもできるが，
+  // writeが失敗するとデータが消滅してしまう
   int fd = open(g_E.file_name, O_RDWR | O_CREAT, 0644);
   if (fd != -1 && ftruncate(fd, len) != -1)
   {
