@@ -54,6 +54,8 @@ void  update_row(t_row* row)
   }
   row->render[idx] = '\0';
   row->rsize = idx;
+
+  update_syntax(row);
 }
 
 void  insert_row(int at, char *s, size_t len)
@@ -71,6 +73,7 @@ void  insert_row(int at, char *s, size_t len)
 
   g_E.row[at].rsize = 0;
   g_E.row[at].render = NULL;
+  g_E.row[at].hl = NULL;
   update_row(&g_E.row[at]);
 
   g_E.num_rows++;
@@ -81,6 +84,7 @@ void  free_row(t_row* row)
 {
   free(row->render);
   free(row->chars);
+  free(row->hl);
 }
 
 void  del_row(int at)

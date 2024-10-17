@@ -57,7 +57,35 @@ static void  draw_rows(t_buf* buf)
 				len = 0;
 			if (len > g_E.screen_cols)
 				len = g_E.screen_cols;
-			buf_append(buf, &g_E.row[file_row].render[g_E.col_off], len);
+      char  *c = &g_E.row[file_row].render[g_E.col_off];
+      unsigned char *hl = &g_E.row[file_row].hl[g_E.col_off];
+      int current_color = -1;
+      int j;
+      for (j = 0;j < len; ++j)
+      {
+        if (hl[j] == HL_NORMAL)
+        {
+          if (current_color != -1)
+          {
+            buf_append(buf, "\x1b[39m", 5);
+            current_color = -1;
+          }
+          buf_append(buf, &c[j], 1);
+        }
+        else
+        {
+          int color = syntax_to_color(hl[j]);
+          if (color != current_color)
+          {
+            current_color = color;
+            char  b[16];
+            int clen = snprintf(b, sizeof(b), "\x1b[%dm", color);
+            buf_append(buf, b, clen);
+          }
+          buf_append(buf, &c[j], 1);
+        }
+      }
+			buf_append(buf, "\x1b[39m", 5);
 		}
 
 		buf_append(buf, "\x1b[K", 3);

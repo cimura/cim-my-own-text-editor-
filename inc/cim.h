@@ -37,6 +37,11 @@ enum  editor_key {
   PAGE_DOWN
 };
 
+enum  editor_highlight {
+  HL_NORMAL = 0,
+  HL_NUMBER
+};
+
 // tabにはアドホックに対応する
 typedef struct  e_row
 {
@@ -44,6 +49,7 @@ typedef struct  e_row
   int rsize;
   char* chars;
   char* render;
+  unsigned char *hl;
 } t_row;
 
 typedef struct  s_config {
@@ -113,3 +119,7 @@ void  editor_insert_newline();
 
 // *** find.c ***
 void  find();
+
+// *** syntax_highlighting.c ***
+void  update_syntax(t_row *row);
+int syntax_to_color(int hl):
