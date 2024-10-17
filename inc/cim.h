@@ -80,6 +80,7 @@ void  init_editor(void);
 void  editor_process(void);
 int  editor_read_key(void);
 void  editor_move_cursor(int key);
+char *editor_prompt(char *prompt);
 
 // *** output.c ***
 void  clear_screen(void);

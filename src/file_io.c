@@ -23,10 +23,17 @@ char* rows_to_string(int* buflen)
 void  editor_save()
 {
 	if (!g_E.file_name)
-		return;
+	{
+    g_E.file_name = editor_prompt("Save as: %s (ESC to cancel)");
+    if (!g_E.file_name)
+    {
+      set_status_message("Save aborted");
+      return;
+    }
+  }
 
 	int len;
-	char* buf = rows_to_string(&len);
+	char *buf = rows_to_string(&len);
 
 	// ftuncateではなくopenのオプションでもできるが，
 	// writeが失敗するとデータが消滅してしまう
