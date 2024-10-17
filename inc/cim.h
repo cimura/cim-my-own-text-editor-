@@ -42,8 +42,8 @@ typedef struct  e_row
 {
   int size;
   int rsize;
-  char  *chars;
-  char  *render;
+  char* chars;
+  char* render;
 } t_row;
 
 typedef struct  s_config {
@@ -56,15 +56,15 @@ typedef struct  s_config {
   int screen_cols;
   int num_rows;
   int dirty;
-  t_row *row;
-  char  *file_name;
+  t_row* row;
+  char* file_name;
   char  status_msg[80];
   time_t  status_msg_time;
   struct	termios orig_termios;
 } t_config;
 
 typedef struct s_buf {
-  char *data;
+  char* data;
   int len;
 } t_buf;
 
@@ -73,7 +73,7 @@ t_config  g_E;
 // *** setup.c ***
 void	disable_raw_mode(void);
 void	enable_raw_mode(void);
-void  error_exit(const char *message);
+void  error_exit(const char* message);
 void  init_editor(void);
 
 // *** read_key.c ***
@@ -83,26 +83,28 @@ void  editor_move_cursor(int key);
 
 // *** output.c ***
 void  clear_screen(void);
-void  set_status_message(const char *fmt, ...);
+void  set_status_message(const char* fmt, ...);
 
 // *** utils.c ***
-int get_window_size(int *rows, int *cols);
-int get_cursor_position(int *rows, int *cols);
-void  buf_append(t_buf *buf, const char *data, int len);
-void  buf_free(t_buf *buf);
+int get_window_size(int* rows, int* cols);
+int get_cursor_position(int* rows, int* cols);
+void  buf_append(t_buf* buf, const char* data, int len);
+void  buf_free(t_buf* buf);
 
 // *** file_io.c ***
-void  editor_open(char *file_name);
+void  editor_open(char* file_name);
 void  editor_save();
 
 // *** row_operations.c ***
-void  append_row(char *s, size_t len);
-int   row_cx_to_rx(t_row *row, int cx);
+void  insert_row(int at, char* s, size_t len);
+int   row_cx_to_rx(t_row* row, int cx);
 void  row_insert_char(t_row* row, int at, int c);
-void  row_del_char(t_row *row, int at);
-void  row_append_string(t_row *row, char *s, size_t len);
+void  row_del_char(t_row* row, int at);
+void  row_append_string(t_row* row, char* s, size_t len);
 void  del_row(int at);
+void  update_row(t_row* row);
 
 // *** editor_operations.c ***
 void  editor_insert_char(int c);
 void  editor_del_char();
+void  editor_insert_newline();

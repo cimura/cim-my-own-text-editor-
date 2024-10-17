@@ -108,7 +108,7 @@ void  editor_process(void)
 	int  c = editor_read_key();
     switch (c) {
     case '\r':
-      // TODO
+      editor_insert_newline();
       break ;
     case CTRL_KEY('q'):
       if (g_E.dirty && quit_times > 0)

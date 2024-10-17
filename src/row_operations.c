@@ -13,7 +13,7 @@ int row_cx_to_rx(t_row* row, int cx)
   return (rx);
 }
 
-static void  update_row(t_row* row)
+void  update_row(t_row* row)
 {
   int tabs = 0;
   int j;
@@ -40,11 +40,14 @@ static void  update_row(t_row* row)
   row->rsize = idx;
 }
 
-void  append_row(char* s, size_t len)
+void  insert_row(int at, char *s, size_t len)
 {
-  g_E.row = realloc(g_E.row, sizeof(t_row) * (g_E.num_rows + 1));
+  if (at < 0 || at > g_E.num_rows)
+    return;
 
-  int at = g_E.num_rows;
+  g_E.row = realloc(g_E.row, sizeof(t_row) * (g_E.num_rows + 1));
+  memmove(&g_E.row[at + 1], &g_E.row[at], sizeof(t_row) * (g_E.num_rows - at));
+
   g_E.row[at].size = len;
   g_E.row[at].chars = malloc(len + 1);
   memcpy(g_E.row[at].chars, s, len);
@@ -58,7 +61,7 @@ void  append_row(char* s, size_t len)
   g_E.dirty++;
 }
 
-void  free_row(t_row *row)
+void  free_row(t_row* row)
 {
   free(row->render);
   free(row->chars);
@@ -91,7 +94,7 @@ void  row_insert_char(t_row* row, int at, int c)
   g_E.dirty++;
 }
 
-void  row_append_string(t_row *row, char *s, size_t len)
+void  row_append_string(t_row* row, char* s, size_t len)
 {
   row->chars = realloc(row->chars, row->size + len + 1);
   memcpy(&row->chars[row->size], s, len);
@@ -101,7 +104,7 @@ void  row_append_string(t_row *row, char *s, size_t len)
   g_E.dirty++;
 }
 
-void  row_del_char(t_row *row, int at)
+void  row_del_char(t_row* row, int at)
 {
   if (at < 0 || at >= row->size)
     return;
