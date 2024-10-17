@@ -2,7 +2,7 @@
 
 // ad-hoc
 // 引数無しで開いた時に名前をつけて保存する
-char *editor_prompt(char *prompt)
+char *editor_prompt(char *prompt, void (*callback)(char *, int))
 {
 	size_t	bufsize = 128;
 	char	*buf = malloc(bufsize);
@@ -18,19 +18,23 @@ char *editor_prompt(char *prompt)
     int c = editor_read_key();
     if ((c == DEL_KEY || c == CTRL_KEY('h') || c == BACKSPACE)
         && buflen != 0)
-          buf[--buflen] = '\0';
+      buf[--buflen] = '\0';
     else if (c == '\x1b')
     {
       set_status_message("");
+      if (callback)
+        callback(buf, c);
       free(buf);
       return (NULL);
     }
     else if (c == '\r' && buflen != 0)
     {
       set_status_message("");
+      if (callback)
+        callback(buf, c);
       return (buf);
     }
-    else if (!iscntrl(c && c < 128))
+    else if (!iscntrl(c) && c < 128)
     {
       if (buflen == bufsize - 1)
       {
@@ -40,6 +44,8 @@ char *editor_prompt(char *prompt)
       buf[buflen++] = c;
       buf[buflen] = '\0';
     }
+    if (callback)
+      callback(buf, c);
 	}
 }
 
@@ -178,6 +184,10 @@ void  editor_process(void)
       if (g_E.cy < g_E.num_rows)
         g_E.cx = g_E.row[g_E.cy].size;
       break;
+    case  CTRL_KEY('f'):
+      find();
+      break;
+
     case BACKSPACE:
     case CTRL_KEY('h'):
     case DEL_KEY:

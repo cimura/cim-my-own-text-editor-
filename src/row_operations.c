@@ -1,6 +1,6 @@
 #include "cim.h"
 
-int row_cx_to_rx(t_row* row, int cx)
+int row_cx_to_rx(t_row *row, int cx)
 {
   int rx = 0;
 
@@ -11,6 +11,22 @@ int row_cx_to_rx(t_row* row, int cx)
     rx++;
   }
   return (rx);
+}
+
+int row_rx_to_cx(t_row *row, int rx)
+{
+  int cur_rx = 0;
+  int cx;
+
+  for (cx = 0; cx < row->size; ++cx)
+  {
+    if (row->chars[cx] == '\t')
+      cur_rx += (CIM_TAB_STOP - 1) - (cur_rx % CIM_TAB_STOP);
+    cur_rx++;
+    if (cur_rx > rx)
+      return (cx);
+  }
+  return (cx);
 }
 
 void  update_row(t_row* row)

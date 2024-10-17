@@ -80,7 +80,7 @@ void  init_editor(void);
 void  editor_process(void);
 int  editor_read_key(void);
 void  editor_move_cursor(int key);
-char *editor_prompt(char *prompt);
+char *editor_prompt(char *prompt, void (*callback)(char *, int));
 
 // *** output.c ***
 void  clear_screen(void);
@@ -99,6 +99,7 @@ void  editor_save();
 // *** row_operations.c ***
 void  insert_row(int at, char* s, size_t len);
 int   row_cx_to_rx(t_row* row, int cx);
+int   row_rx_to_cx(t_row *row, int rx);
 void  row_insert_char(t_row* row, int at, int c);
 void  row_del_char(t_row* row, int at);
 void  row_append_string(t_row* row, char* s, size_t len);
@@ -109,3 +110,6 @@ void  update_row(t_row* row);
 void  editor_insert_char(int c);
 void  editor_del_char();
 void  editor_insert_newline();
+
+// *** find.c ***
+void  find();

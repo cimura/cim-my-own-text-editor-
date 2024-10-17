@@ -24,7 +24,7 @@ void  editor_save()
 {
 	if (!g_E.file_name)
 	{
-    g_E.file_name = editor_prompt("Save as: %s (ESC to cancel)");
+    g_E.file_name = editor_prompt("Save as: %s (ESC to cancel)", NULL);
     if (!g_E.file_name)
     {
       set_status_message("Save aborted");

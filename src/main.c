@@ -6,7 +6,7 @@ int	main(int argc, char* argv[]) {
 	if (argc >= 2)
 		editor_open(argv[1]);
 
-	set_status_message("ctrl+s: save | ctrl+q: quit");
+	set_status_message("ctrl-s: save | ctrl-q: quit | ctrl-f: find");
 
 	while (1)
 	{
