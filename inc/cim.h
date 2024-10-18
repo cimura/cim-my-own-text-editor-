@@ -17,6 +17,7 @@
 #define CIM_TAB_STOP 8
 #define CIM_QUIT_TIMES 1
 #define HL_HIGHLIGHT_NUMBERS  (1<<0)
+#define HL_HIGHLIGHT_STRINGS  (1<<1)
 
 #define _DEFAULT_SOURCE
 #define _BSD_SOURCE
@@ -40,14 +41,21 @@ enum  editor_key {
 
 enum  editor_highlight {
   HL_NORMAL = 0,
+  HL_COMMENT,
+  HL_KEYWORD1,
+  HL_KEYWORD2,
+  HL_STRING,
   HL_NUMBER,
   HL_MATCH
 };
 
+// singleline_comment_line => scs
 typedef struct e_syntax
 {
   char  *filetype;
   char  **file_match;
+  char  **keywords;
+  char  *singleline_comment_start;
   int flags;
 } t_syntax;
 
