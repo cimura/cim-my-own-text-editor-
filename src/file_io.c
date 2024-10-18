@@ -30,6 +30,7 @@ void  editor_save()
       set_status_message("Save aborted");
       return;
     }
+    select_syntax_highlight();
   }
 
 	int len;
@@ -58,6 +59,7 @@ void  editor_open(char* file_name)
 	free(g_E.file_name);
 	g_E.file_name = strdup(file_name);
 
+  select_syntax_highlight();
 	FILE* fp = fopen(file_name, "r");
 	if (!fp)
 		error_exit("fopen");

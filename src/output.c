@@ -101,8 +101,9 @@ static void  draw_status_bar(t_buf* buf)
 	int len = snprintf(status, sizeof(status), "%.20s - %d lines %s",
 		      g_E.file_name ? g_E.file_name : "[No Name]", g_E.num_rows,
           g_E.dirty ? "(modified)" : "");
-	int rlen = snprintf(rstatus, sizeof(rstatus), "%d/%d",
-		g_E.cy + 1, g_E.num_rows);
+  // no ft stands for "no filetype"
+	int rlen = snprintf(rstatus, sizeof(rstatus), "%s | %d/%d",
+		g_E.syntax ? g_E.syntax->filetype : "no ft", g_E.cy + 1, g_E.num_rows);
 	if (len > g_E.screen_cols)
 		len = g_E.screen_cols;
 	buf_append(buf, status, len);

@@ -13,6 +13,7 @@ void  init_editor(void)
 	g_E.file_name = NULL;
 	g_E.status_msg[0] = '\0';
 	g_E.status_msg_time = 0;
+  g_E.syntax = NULL;
 
 	if (get_window_size(&g_E.screen_rows, &g_E.screen_cols) == -1)
 		error_exit("get_window_size");

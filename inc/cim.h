@@ -16,6 +16,7 @@
 #define CIM_VERSION "0.0.1"
 #define CIM_TAB_STOP 8
 #define CIM_QUIT_TIMES 1
+#define HL_HIGHLIGHT_NUMBERS  (1<<0)
 
 #define _DEFAULT_SOURCE
 #define _BSD_SOURCE
@@ -39,8 +40,17 @@ enum  editor_key {
 
 enum  editor_highlight {
   HL_NORMAL = 0,
-  HL_NUMBER
+  HL_NUMBER,
+  HL_MATCH
 };
+
+typedef struct e_syntax
+{
+  char  *filetype;
+  char  **file_match;
+  int flags;
+} t_syntax;
+
 
 // tabにはアドホックに対応する
 typedef struct  e_row
@@ -66,6 +76,7 @@ typedef struct  s_config {
   char* file_name;
   char  status_msg[80];
   time_t  status_msg_time;
+  t_syntax  *syntax;
   struct	termios orig_termios;
 } t_config;
 
@@ -122,4 +133,5 @@ void  find();
 
 // *** syntax_highlighting.c ***
 void  update_syntax(t_row *row);
-int syntax_to_color(int hl):
+int syntax_to_color(int hl);
+void  select_syntax_highlight();
