@@ -131,13 +131,13 @@ int syntax_to_color(int hl)
     case HL_COMMENT:
       return (36);
     case HL_KEYWORD1:
-      return (33);
+      return (93);
     case HL_KEYWORD2:
-      return (32);
+      return (92);
     case HL_STRING:
       return (35);
     case HL_NUMBER:
-      return (31);
+      return (95);
     case HL_MATCH:
       return (34);
     default:
