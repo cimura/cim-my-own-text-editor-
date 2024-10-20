@@ -42,6 +42,7 @@ enum  editor_key {
 enum  editor_highlight {
   HL_NORMAL = 0,
   HL_COMMENT,
+  HL_MLCOMMENT,
   HL_KEYWORD1,
   HL_KEYWORD2,
   HL_STRING,
@@ -56,6 +57,8 @@ typedef struct e_syntax
   char  **file_match;
   char  **keywords;
   char  *singleline_comment_start;
+  char  *multiline_comment_start;
+  char  *multiline_comment_end;
   int flags;
 } t_syntax;
 
@@ -63,11 +66,13 @@ typedef struct e_syntax
 // tabにはアドホックに対応する
 typedef struct  e_row
 {
+  int idx;
   int size;
   int rsize;
   char* chars;
   char* render;
   unsigned char *hl;
+  int hl_open_comment;
 } t_row;
 
 typedef struct  s_config {

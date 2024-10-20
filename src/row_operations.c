@@ -65,6 +65,10 @@ void  insert_row(int at, char *s, size_t len)
 
   g_E.row = realloc(g_E.row, sizeof(t_row) * (g_E.num_rows + 1));
   memmove(&g_E.row[at + 1], &g_E.row[at], sizeof(t_row) * (g_E.num_rows - at));
+  for (int j = at + 1; j <= g_E.num_rows; ++j)
+    g_E.row[j].idx++;
+
+  g_E.row[at].idx = at;
 
   g_E.row[at].size = len;
   g_E.row[at].chars = malloc(len + 1);
@@ -74,6 +78,7 @@ void  insert_row(int at, char *s, size_t len)
   g_E.row[at].rsize = 0;
   g_E.row[at].render = NULL;
   g_E.row[at].hl = NULL;
+  g_E.row[at].hl_open_comment = 0;
   update_row(&g_E.row[at]);
 
   g_E.num_rows++;
@@ -93,6 +98,8 @@ void  del_row(int at)
     return;
   free_row(&g_E.row[at]);
   memmove(&g_E.row[at], &g_E.row[at + 1], sizeof(t_row) * (g_E.num_rows - at - 1));
+  for (int j = at; j < g_E.num_rows - 1; ++j)
+    g_E.row[j].idx--;
   g_E.num_rows--;
   g_E.dirty++;
 }

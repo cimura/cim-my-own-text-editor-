@@ -63,7 +63,20 @@ static void  draw_rows(t_buf* buf)
       int j;
       for (j = 0;j < len; ++j)
       {
-        if (hl[j] == HL_NORMAL)
+        if (iscntrl(c[j]))
+        {
+          char  sym = (c[j] <= 26) ? '@' + c[j] : '?';
+          buf_append(buf, "\x1b[7m", 4);
+          buf_append(buf, &sym, 1);
+          buf_append(buf, "\x1b[m", 3);
+          if (current_color != -1)
+          {
+            char  b[16];
+            int clen = snprintf(b, sizeof(b), "\x1b[%dm", current_color);
+            buf_append(buf, b, clen);
+          }
+        }
+        else if (hl[j] == HL_NORMAL)
         {
           if (current_color != -1)
           {
